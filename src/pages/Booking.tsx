@@ -1,5 +1,6 @@
 
 import { useState } from "react";
+import { DateRange } from "react-day-picker";
 import { Calendar } from "@/components/ui/calendar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -11,8 +12,7 @@ import { addDays } from "date-fns";
 
 const BookingPage = () => {
   const [eventType, setEventType] = useState<string>("");
-  const [startDate, setStartDate] = useState<Date | undefined>(undefined);
-  const [endDate, setEndDate] = useState<Date | undefined>(undefined);
+  const [date, setDate] = useState<DateRange | undefined>();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -25,7 +25,7 @@ const BookingPage = () => {
       toast.error("Please select an event type");
       return;
     }
-    if (!startDate || !endDate) {
+    if (!date?.from || !date?.to) {
       toast.error("Please select both start and end dates");
       return;
     }
@@ -81,31 +81,17 @@ const BookingPage = () => {
             <div className="glass p-6 rounded-lg">
               <h2 className="text-xl font-semibold mb-4">Select Dates</h2>
               <div className="space-y-4">
-                <div>
-                  <Label>Start Date</Label>
-                  <Calendar
-                    mode="single"
-                    selected={startDate}
-                    onSelect={setStartDate}
-                    disabled={(date) =>
-                      date < new Date() || (endDate ? date > endDate : false)
-                    }
-                    className="rounded-md border"
-                  />
-                </div>
-                <div>
-                  <Label>End Date</Label>
-                  <Calendar
-                    mode="single"
-                    selected={endDate}
-                    onSelect={setEndDate}
-                    disabled={(date) =>
-                      date < (startDate || new Date()) ||
-                      date > addDays(startDate || new Date(), 7)
-                    }
-                    className="rounded-md border"
-                  />
-                </div>
+                <Calendar
+                  mode="range"
+                  selected={date}
+                  onSelect={setDate}
+                  disabled={(date) =>
+                    date < new Date() ||
+                    (date > addDays(new Date(), 30))
+                  }
+                  numberOfMonths={1}
+                  className="rounded-md border"
+                />
               </div>
             </div>
 
