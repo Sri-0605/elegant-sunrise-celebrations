@@ -5,20 +5,20 @@
 
 @layer base {
   :root {
-    --background: 24 33% 97%;
+    --background: 350 30% 96%;
     --foreground: 20 16% 36%;
-    --card: 24 33% 99%;
+    --card: 350 30% 98%;
     --card-foreground: 20 16% 36%;
     --popover: 0 0% 100%;
     --popover-foreground: 20 16% 36%;
-    --primary: 24 33% 97%;
+    --primary: 350 80% 90%;
     --primary-foreground: 20 16% 36%;
     --secondary: 60 4.8% 95.9%;
     --secondary-foreground: 24 9.8% 10%;
     --muted: 60 4.8% 95.9%;
     --muted-foreground: 25 5.3% 44.7%;
-    --accent: 12 83% 86%;
-    --accent-foreground: 24 9.8% 10%;
+    --accent: 350 85% 60%;
+    --accent-foreground: 60 9.1% 97.8%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 60 9.1% 97.8%;
     --border: 20 5.9% 90%;
@@ -45,7 +45,7 @@
 }
 
 .hero-gradient {
-  background: linear-gradient(to right, rgba(248,215,196,0.2), rgba(255,154,139,0.2));
+  background: linear-gradient(to right, rgba(255,182,193,0.2), rgba(255,105,180,0.2));
 }
 
 .card-hover {

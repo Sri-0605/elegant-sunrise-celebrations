@@ -21,18 +21,18 @@ export default {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         primary: {
-          DEFAULT: "#F8D7C4",
-          hover: "#F6C5AC",
+          DEFAULT: "#FFB6C1",
+          hover: "#FFA0B3",
           foreground: "#2D3436",
         },
         secondary: {
-          DEFAULT: "#FFE4D6",
-          hover: "#FFD4BE",
+          DEFAULT: "#FFF0F5",
+          hover: "#FFE4EC",
           foreground: "#2D3436",
         },
         accent: {
-          DEFAULT: "#FF9A8B",
-          hover: "#FF8573",
+          DEFAULT: "#FF69B4",
+          hover: "#FF1493",
           foreground: "#FFFFFF",
         },
         destructive: {
