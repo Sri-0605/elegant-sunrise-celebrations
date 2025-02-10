@@ -32,11 +32,11 @@ const SparkleEffect = () => {
     const createSparkle = (x: number, y: number): Sparkle => ({
       x,
       y,
-      size: Math.random() * 8 + 6, // Even larger size
+      size: Math.random() * 8 + 6,
       opacity: Math.random() * 0.7 + 0.3,
       life: 1,
-      velocityX: (Math.random() - 0.5) * 0.8, // Reduced velocity
-      velocityY: (Math.random() - 0.5) * 0.8, // Reduced velocity
+      velocityX: (Math.random() - 0.5) * 0.8,
+      velocityY: (Math.random() - 0.5) * 0.8,
     });
 
     const colors = [
@@ -52,7 +52,7 @@ const SparkleEffect = () => {
 
       // Update and draw sparkles
       sparklesRef.current = sparklesRef.current.filter((sparkle) => {
-        sparkle.life -= 0.015; // Slightly faster fade out
+        sparkle.life -= 0.015;
         sparkle.x += sparkle.velocityX;
         sparkle.y += sparkle.velocityY;
         sparkle.opacity = sparkle.life * 0.8;
@@ -74,16 +74,32 @@ const SparkleEffect = () => {
       frameRef.current = requestAnimationFrame(animate);
     };
 
+    const isOverElement = (x: number, y: number) => {
+      const elements = document.elementsFromPoint(x, y);
+      // Check if the point is over any element other than the canvas, body, or html
+      return elements.some(element => {
+        if (element === canvas || element.tagName === 'BODY' || element.tagName === 'HTML') {
+          return false;
+        }
+        // Get computed style
+        const style = window.getComputedStyle(element);
+        // Check if the element has a background or is an image
+        return style.backgroundImage !== 'none' || 
+               element.tagName === 'IMG' || 
+               style.backgroundColor !== 'rgba(0, 0, 0, 0)';
+      });
+    };
+
     const handleMouseMove = (e: MouseEvent) => {
       const rect = canvas.getBoundingClientRect();
-      mouseRef.current = {
-        x: e.clientX - rect.left,
-        y: e.clientY - rect.top,
-      };
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
 
-      // Add sparkles near cursor with larger spread
-      if (Math.random() < 0.5) { // Reduced frequency of sparkle creation
-        const offset = 60; // Larger spread area
+      mouseRef.current = { x, y };
+
+      // Only create sparkles if not over elements
+      if (!isOverElement(e.clientX, e.clientY) && Math.random() < 0.5) {
+        const offset = 60;
         sparklesRef.current.push(
           createSparkle(
             mouseRef.current.x + (Math.random() - 0.5) * offset,
