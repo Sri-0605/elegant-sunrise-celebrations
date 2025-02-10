@@ -9,12 +9,14 @@ import Index from "./pages/Index";
 import Booking from "./pages/Booking";
 import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
+import SparkleEffect from "./components/SparkleEffect";
 
 const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
+      <SparkleEffect />
       <Toaster />
       <Sonner />
       <BrowserRouter>
