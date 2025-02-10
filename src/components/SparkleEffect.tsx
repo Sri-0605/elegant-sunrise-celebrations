@@ -32,17 +32,17 @@ const SparkleEffect = () => {
     const createSparkle = (x: number, y: number): Sparkle => ({
       x,
       y,
-      size: Math.random() * 4 + 2,
-      opacity: Math.random() * 0.5 + 0.5,
+      size: Math.random() * 6 + 4, // Increased size
+      opacity: Math.random() * 0.7 + 0.3, // More visible opacity
       life: 1,
-      velocityX: (Math.random() - 0.5) * 2,
-      velocityY: (Math.random() - 0.5) * 2,
+      velocityX: (Math.random() - 0.5) * 1.5,
+      velocityY: (Math.random() - 0.5) * 1.5,
     });
 
     const colors = [
-      'rgba(255, 182, 193, opacity)', // Light pink
-      'rgba(255, 160, 180, opacity)', // Darker pink
-      'rgba(255, 140, 170, opacity)', // Even darker pink
+      'rgba(255, 105, 180, opacity)', // Hot pink
+      'rgba(255, 20, 147, opacity)',  // Deep pink
+      'rgba(255, 192, 203, opacity)', // Pink
     ];
 
     const animate = () => {
@@ -50,25 +50,12 @@ const SparkleEffect = () => {
 
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      // Create new sparkles randomly across the screen
-      if (sparklesRef.current.length < 50 && Math.random() < 0.1) {
-        sparklesRef.current.push(
-          createSparkle(
-            Math.random() * canvas.width,
-            Math.random() * canvas.height
-          )
-        );
-      }
-
       // Update and draw sparkles
       sparklesRef.current = sparklesRef.current.filter((sparkle) => {
-        sparkle.life -= 0.002;
+        sparkle.life -= 0.01; // Faster fade out
         sparkle.x += sparkle.velocityX;
         sparkle.y += sparkle.velocityY;
-
-        // Bounce off edges
-        if (sparkle.x <= 0 || sparkle.x >= canvas.width) sparkle.velocityX *= -1;
-        if (sparkle.y <= 0 || sparkle.y >= canvas.height) sparkle.velocityY *= -1;
+        sparkle.opacity = sparkle.life * 0.8; // Maintain visibility while fading
 
         // Draw sparkle
         const color = colors[Math.floor(Math.random() * colors.length)].replace(
@@ -94,9 +81,9 @@ const SparkleEffect = () => {
         y: e.clientY - rect.top,
       };
 
-      // Add extra sparkles near cursor
-      if (Math.random() < 0.3) {
-        const offset = 20;
+      // Add sparkles near cursor
+      for (let i = 0; i < 3; i++) { // Create multiple sparkles per movement
+        const offset = 30;
         sparklesRef.current.push(
           createSparkle(
             mouseRef.current.x + (Math.random() - 0.5) * offset,
