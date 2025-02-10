@@ -32,11 +32,11 @@ const SparkleEffect = () => {
     const createSparkle = (x: number, y: number): Sparkle => ({
       x,
       y,
-      size: Math.random() * 6 + 4, // Increased size
-      opacity: Math.random() * 0.7 + 0.3, // More visible opacity
+      size: Math.random() * 8 + 6, // Even larger size
+      opacity: Math.random() * 0.7 + 0.3,
       life: 1,
-      velocityX: (Math.random() - 0.5) * 1.5,
-      velocityY: (Math.random() - 0.5) * 1.5,
+      velocityX: (Math.random() - 0.5) * 0.8, // Reduced velocity
+      velocityY: (Math.random() - 0.5) * 0.8, // Reduced velocity
     });
 
     const colors = [
@@ -52,10 +52,10 @@ const SparkleEffect = () => {
 
       // Update and draw sparkles
       sparklesRef.current = sparklesRef.current.filter((sparkle) => {
-        sparkle.life -= 0.01; // Faster fade out
+        sparkle.life -= 0.015; // Slightly faster fade out
         sparkle.x += sparkle.velocityX;
         sparkle.y += sparkle.velocityY;
-        sparkle.opacity = sparkle.life * 0.8; // Maintain visibility while fading
+        sparkle.opacity = sparkle.life * 0.8;
 
         // Draw sparkle
         const color = colors[Math.floor(Math.random() * colors.length)].replace(
@@ -81,9 +81,9 @@ const SparkleEffect = () => {
         y: e.clientY - rect.top,
       };
 
-      // Add sparkles near cursor
-      for (let i = 0; i < 3; i++) { // Create multiple sparkles per movement
-        const offset = 30;
+      // Add sparkles near cursor with larger spread
+      if (Math.random() < 0.5) { // Reduced frequency of sparkle creation
+        const offset = 60; // Larger spread area
         sparklesRef.current.push(
           createSparkle(
             mouseRef.current.x + (Math.random() - 0.5) * offset,
