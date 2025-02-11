@@ -15,6 +15,7 @@ const SparkleEffect = () => {
   const mouseRef = useRef({ x: 0, y: 0 });
   const frameRef = useRef<number>();
   const gridSize = 38; // Approximately 1cm (38px)
+  const areaSize = 190; // Approximately 5cm (190px)
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -36,7 +37,7 @@ const SparkleEffect = () => {
     const createSparkle = (x: number, y: number): Sparkle => ({
       x,
       y,
-      size: Math.random() < 0.5 ? 3 : 5, // Two different sizes
+      size: Math.random() < 0.5 ? 6 : 8, // Larger sizes
       opacity: 0,
       color: colors[Math.floor(Math.random() * colors.length)],
     });
@@ -56,12 +57,13 @@ const SparkleEffect = () => {
       sparklesRef.current.forEach((sparkle) => {
         ctx.beginPath();
         ctx.arc(sparkle.x, sparkle.y, sparkle.size, 0, Math.PI * 2);
-        ctx.fillStyle = sparkle.color.replace('1)', `${sparkle.opacity})`);
+        // Make the dots more subtle by reducing max opacity
+        ctx.fillStyle = sparkle.color.replace('1)', `${sparkle.opacity * 0.4})`);
         ctx.fill();
 
-        // Fade in effect
+        // Slower fade in for subtlety
         if (sparkle.opacity < 0.8) {
-          sparkle.opacity += 0.1;
+          sparkle.opacity += 0.05;
         }
       });
 
@@ -96,15 +98,15 @@ const SparkleEffect = () => {
       // Clear previous sparkles
       sparklesRef.current = [];
       
-      // Create sparkles in a 1cm x 1cm grid around the cursor
-      for (let offsetX = -gridSize; offsetX <= gridSize; offsetX += gridSize/2) {
-        for (let offsetY = -gridSize; offsetY <= gridSize; offsetY += gridSize/2) {
+      // Create sparkles in a 5cm x 5cm grid around the cursor with 1cm spacing
+      for (let offsetX = -areaSize; offsetX <= areaSize; offsetX += gridSize) {
+        for (let offsetY = -areaSize; offsetY <= areaSize; offsetY += gridSize) {
           const sparkleX = gridX + offsetX;
           const sparkleY = gridY + offsetY;
           
-          // Only add sparkles within 1cm radius
+          // Only add sparkles within 5cm radius
           const distance = Math.sqrt(offsetX * offsetX + offsetY * offsetY);
-          if (distance <= gridSize) {
+          if (distance <= areaSize) {
             sparklesRef.current.push(createSparkle(sparkleX, sparkleY));
           }
         }
