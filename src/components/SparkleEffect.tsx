@@ -59,12 +59,12 @@ const SparkleEffect = () => {
       sparklesRef.current.forEach((sparkle) => {
         ctx.beginPath();
         ctx.arc(sparkle.x, sparkle.y, sparkle.size, 0, Math.PI * 2);
-        ctx.fillStyle = sparkle.color.replace('1)', `${sparkle.opacity * 0.4})`);
+        ctx.fillStyle = sparkle.color.replace('1)', `${sparkle.opacity * 0.8})`); // Increased opacity
         ctx.fill();
 
-        // Smoother fade in/out
+        // Smoother fade in/out but faster
         if (sparkle.opacity < 0.8) {
-          sparkle.opacity += 0.02; // Slower fade in
+          sparkle.opacity += 0.05; // Faster fade in
         }
       });
 
@@ -102,14 +102,14 @@ const SparkleEffect = () => {
       // Create sparkles in a 5cm x 5cm grid around the cursor with 1cm spacing
       const newSparkles: Sparkle[] = [];
       
-      for (let offsetX = -areaSize; offsetX <= areaSize; offsetX += gridSize * 1.5) { // Increased spacing
-        for (let offsetY = -areaSize; offsetY <= areaSize; offsetY += gridSize * 1.5) { // Increased spacing
-          const sparkleX = gridX + offsetX + (Math.random() * gridSize - gridSize/2) * 0.5; // Add slight random position
-          const sparkleY = gridY + offsetY + (Math.random() * gridSize - gridSize/2) * 0.5; // Add slight random position
+      for (let offsetX = -areaSize; offsetX <= areaSize; offsetX += gridSize * 1.5) {
+        for (let offsetY = -areaSize; offsetY <= areaSize; offsetY += gridSize * 1.5) {
+          const sparkleX = gridX + offsetX + (Math.random() * gridSize - gridSize/2) * 0.5;
+          const sparkleY = gridY + offsetY + (Math.random() * gridSize - gridSize/2) * 0.5;
           
           // Only add sparkles within a randomized radius
           const distance = Math.sqrt(offsetX * offsetX + offsetY * offsetY);
-          const randomizedAreaSize = areaSize * (0.8 + Math.random() * 0.4); // Random area size between 80% and 120%
+          const randomizedAreaSize = areaSize * (0.8 + Math.random() * 0.4);
           
           if (distance <= randomizedAreaSize) {
             newSparkles.push(createSparkle(sparkleX, sparkleY));
@@ -141,7 +141,6 @@ const SparkleEffect = () => {
     <canvas
       ref={canvasRef}
       className="pointer-events-none fixed inset-0 z-50"
-      style={{ mixBlendMode: 'screen' }}
     />
   );
 };
