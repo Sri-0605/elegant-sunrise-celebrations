@@ -30,14 +30,15 @@ const SparkleEffect = () => {
     };
 
     const colors = [
-      '#1EAEDB', // Bright blue
-      '#0EA5E9', // Ocean blue
+      '#8B5CF6', // Vivid Purple
+      '#D946EF', // Magenta Pink
+      '#F97316', // Bright Orange
     ];
 
     const createSparkle = (x: number, y: number): Sparkle => ({
       x,
       y,
-      size: Math.random() * (12 - 6) + 6, // Random size between 6 and 12
+      size: Math.random() * (16 - 8) + 8, // Larger random size between 8 and 16
       opacity: 0,
       color: colors[Math.floor(Math.random() * colors.length)],
     });
@@ -59,12 +60,12 @@ const SparkleEffect = () => {
       sparklesRef.current.forEach((sparkle) => {
         ctx.beginPath();
         ctx.arc(sparkle.x, sparkle.y, sparkle.size, 0, Math.PI * 2);
-        ctx.fillStyle = sparkle.color.replace('1)', `${sparkle.opacity * 0.8})`); // Increased opacity
+        ctx.fillStyle = sparkle.color.replace('1)', `${sparkle.opacity})`); // Full opacity
         ctx.fill();
 
         // Smoother fade in/out but faster
-        if (sparkle.opacity < 0.8) {
-          sparkle.opacity += 0.05; // Faster fade in
+        if (sparkle.opacity < 1) {
+          sparkle.opacity += 0.08; // Even faster fade in
         }
       });
 
