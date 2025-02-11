@@ -37,7 +37,7 @@ const SparkleEffect = () => {
     const createSparkle = (x: number, y: number): Sparkle => ({
       x,
       y,
-      size: Math.random() < 0.5 ? 6 : 8, // Larger sizes
+      size: Math.random() * (12 - 6) + 6, // Random size between 6 and 12
       opacity: 0,
       color: colors[Math.floor(Math.random() * colors.length)],
     });
@@ -54,16 +54,17 @@ const SparkleEffect = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       // Update and draw sparkles
+      sparklesRef.current = sparklesRef.current.filter(sparkle => sparkle.opacity > 0);
+      
       sparklesRef.current.forEach((sparkle) => {
         ctx.beginPath();
         ctx.arc(sparkle.x, sparkle.y, sparkle.size, 0, Math.PI * 2);
-        // Make the dots more subtle by reducing max opacity
         ctx.fillStyle = sparkle.color.replace('1)', `${sparkle.opacity * 0.4})`);
         ctx.fill();
 
-        // Slower fade in for subtlety
+        // Smoother fade in/out
         if (sparkle.opacity < 0.8) {
-          sparkle.opacity += 0.05;
+          sparkle.opacity += 0.02; // Slower fade in
         }
       });
 
@@ -89,28 +90,35 @@ const SparkleEffect = () => {
       const y = e.clientY - rect.top;
 
       if (isOverElement(e.clientX, e.clientY)) {
-        sparklesRef.current = [];
+        // Fade out existing sparkles
+        sparklesRef.current.forEach(sparkle => {
+          sparkle.opacity = Math.max(0, sparkle.opacity - 0.1);
+        });
         return;
       }
 
       const { gridX, gridY } = getGridPosition(x, y);
       
-      // Clear previous sparkles
-      sparklesRef.current = [];
-      
       // Create sparkles in a 5cm x 5cm grid around the cursor with 1cm spacing
-      for (let offsetX = -areaSize; offsetX <= areaSize; offsetX += gridSize) {
-        for (let offsetY = -areaSize; offsetY <= areaSize; offsetY += gridSize) {
-          const sparkleX = gridX + offsetX;
-          const sparkleY = gridY + offsetY;
+      const newSparkles: Sparkle[] = [];
+      
+      for (let offsetX = -areaSize; offsetX <= areaSize; offsetX += gridSize * 1.5) { // Increased spacing
+        for (let offsetY = -areaSize; offsetY <= areaSize; offsetY += gridSize * 1.5) { // Increased spacing
+          const sparkleX = gridX + offsetX + (Math.random() * gridSize - gridSize/2) * 0.5; // Add slight random position
+          const sparkleY = gridY + offsetY + (Math.random() * gridSize - gridSize/2) * 0.5; // Add slight random position
           
-          // Only add sparkles within 5cm radius
+          // Only add sparkles within a randomized radius
           const distance = Math.sqrt(offsetX * offsetX + offsetY * offsetY);
-          if (distance <= areaSize) {
-            sparklesRef.current.push(createSparkle(sparkleX, sparkleY));
+          const randomizedAreaSize = areaSize * (0.8 + Math.random() * 0.4); // Random area size between 80% and 120%
+          
+          if (distance <= randomizedAreaSize) {
+            newSparkles.push(createSparkle(sparkleX, sparkleY));
           }
         }
       }
+
+      // Update sparkles array with new sparkles
+      sparklesRef.current = [...sparklesRef.current.filter(s => s.opacity > 0.1), ...newSparkles];
     };
 
     // Initialize
