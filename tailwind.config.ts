@@ -15,43 +15,43 @@ export default {
     },
     extend: {
       fontFamily: {
-        'playfair': ['Playfair Display', 'serif'],
+        'montserrat': ['Montserrat', 'sans-serif'],
       },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
-        background: "hsl(var(--background))",
-        foreground: "hsl(var(--foreground))",
+        background: "#1A1F2C",
+        foreground: "#F8F9FA",
         primary: {
-          DEFAULT: "#8B5CF6", // Vivid Purple
+          DEFAULT: "#8B5CF6",
           hover: "#7C3AED",
           foreground: "#FFFFFF",
         },
         secondary: {
-          DEFAULT: "#FEC6A1", // Soft Orange
+          DEFAULT: "#FEC6A1",
           hover: "#FDB088",
           foreground: "#2D3436",
         },
         accent: {
-          DEFAULT: "#D946EF", // Magenta Pink
+          DEFAULT: "#D946EF",
           hover: "#C026D3",
           foreground: "#FFFFFF",
         },
         destructive: {
-          DEFAULT: "#F97316", // Bright Orange
+          DEFAULT: "#F97316",
           foreground: "#FFFFFF",
         },
         muted: {
-          DEFAULT: "#FEF7CD", // Soft Yellow
+          DEFAULT: "#E5DEFF",
           foreground: "#2D3436",
         },
         popover: {
-          DEFAULT: "#FDE1D3", // Soft Peach
+          DEFAULT: "#FDE1D3",
           foreground: "#2D3436",
         },
         card: {
-          DEFAULT: "#F2FCE2", // Soft Green
+          DEFAULT: "#F2FCE2",
           foreground: "#2D3436",
         },
       },
