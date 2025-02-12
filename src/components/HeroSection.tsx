@@ -11,27 +11,30 @@ const HeroSection = () => {
     <section className="relative h-screen flex items-center justify-center overflow-hidden">
       <div className="absolute inset-0 hero-gradient" />
       <div
-        className="absolute inset-0 bg-cover bg-center z-0"
+        className="absolute inset-0 bg-cover bg-center z-0 blur-[2px]"
         style={{
           backgroundImage: 'url("/lovable-uploads/cb0ec52d-76c4-43be-9689-eeeff9d00fa2.png")',
         }}
       />
-      <div className="absolute inset-0 bg-black/10" />
+      <div className="absolute inset-0 bg-black/30" />
+      
+      {/* Logo in top right corner */}
+      <div className="absolute top-6 right-6 z-20">
+        <img 
+          src="/lovable-uploads/4f7f3e30-0652-45cd-bae1-e10b70664f20.png"
+          alt="Sunrise Events Logo"
+          className="w-24 h-24 animate-fade-up"
+        />
+      </div>
+
       <div className="relative z-10 text-center px-4">
-        <div className="flex items-center justify-center gap-4 mb-6">
-          <img 
-            src="/lovable-uploads/4f7f3e30-0652-45cd-bae1-e10b70664f20.png"
-            alt="Sunrise Events Logo"
-            className="w-20 h-20 animate-fade-up"
-          />
-          <h1 className="text-4xl md:text-6xl lg:text-7xl font-semibold text-white animate-fade-up">
-            Sunrise Events
-          </h1>
-        </div>
-        <p className="text-white/90 text-lg md:text-xl max-w-2xl mx-auto mb-8 animate-fade-up">
+        <h1 className="font-playfair text-5xl md:text-7xl lg:text-8xl font-semibold text-white animate-fade-up mb-6">
+          Sunrise Events
+        </h1>
+        <p className="font-playfair text-white/90 text-xl md:text-2xl max-w-2xl mx-auto mb-8 animate-fade-up italic">
           Creating magical moments that last a lifetime
         </p>
-        <button className="bg-accent hover:bg-accent-hover text-white px-8 py-3 rounded-full transition-all duration-300 animate-fade-up shadow-lg">
+        <button className="bg-accent hover:bg-accent-hover text-white px-8 py-3 rounded-full transition-all duration-300 animate-fade-up shadow-lg font-playfair text-lg">
           Book Now
         </button>
       </div>
