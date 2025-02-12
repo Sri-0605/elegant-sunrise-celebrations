@@ -17,15 +17,6 @@ const HeroSection = () => {
         }}
       />
       <div className="absolute inset-0 bg-black/30" />
-      
-      {/* Logo in top right corner */}
-      <div className="absolute top-6 right-6 z-20">
-        <img 
-          src="/lovable-uploads/4f7f3e30-0652-45cd-bae1-e10b70664f20.png"
-          alt="Sunrise Events Logo"
-          className="w-24 h-24 animate-fade-up"
-        />
-      </div>
 
       <div className="relative z-10 text-center px-4">
         <h1 className="font-playfair text-5xl md:text-7xl lg:text-8xl font-semibold text-white animate-fade-up mb-6">

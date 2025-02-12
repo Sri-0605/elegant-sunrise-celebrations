@@ -27,8 +27,12 @@ const Navigation = () => {
       }`}
     >
       <nav className="container mx-auto px-4 py-4 flex items-center justify-between">
-        <Link to="/" className="text-2xl font-semibold">
-          Sunrise Events
+        <Link to="/" className="flex items-center gap-2">
+          <img 
+            src="/lovable-uploads/9429bab3-59d1-4091-aa3d-98ae8360bad7.png" 
+            alt="Sunrise Events Logo" 
+            className="h-16 w-16 object-contain"
+          />
         </Link>
         <div className="hidden md:flex items-center gap-8">
           <Link
