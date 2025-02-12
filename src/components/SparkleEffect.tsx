@@ -30,15 +30,14 @@ const SparkleEffect = () => {
     };
 
     const colors = [
-      '#8B5CF6', // Vivid Purple
-      '#D946EF', // Magenta Pink
-      '#F97316', // Bright Orange
+      '#1EAEDB', // Bright blue
+      '#0EA5E9', // Ocean blue
     ];
 
     const createSparkle = (x: number, y: number): Sparkle => ({
       x,
       y,
-      size: Math.random() * (16 - 8) + 8, // Larger random size between 8 and 16
+      size: Math.random() < 0.5 ? 6 : 8, // Larger sizes
       opacity: 0,
       color: colors[Math.floor(Math.random() * colors.length)],
     });
@@ -55,17 +54,16 @@ const SparkleEffect = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       // Update and draw sparkles
-      sparklesRef.current = sparklesRef.current.filter(sparkle => sparkle.opacity > 0);
-      
       sparklesRef.current.forEach((sparkle) => {
         ctx.beginPath();
         ctx.arc(sparkle.x, sparkle.y, sparkle.size, 0, Math.PI * 2);
-        ctx.fillStyle = sparkle.color.replace('1)', `${sparkle.opacity})`); // Full opacity
+        // Make the dots more subtle by reducing max opacity
+        ctx.fillStyle = sparkle.color.replace('1)', `${sparkle.opacity * 0.4})`);
         ctx.fill();
 
-        // Smoother fade in/out but faster
-        if (sparkle.opacity < 1) {
-          sparkle.opacity += 0.08; // Even faster fade in
+        // Slower fade in for subtlety
+        if (sparkle.opacity < 0.8) {
+          sparkle.opacity += 0.05;
         }
       });
 
@@ -91,35 +89,28 @@ const SparkleEffect = () => {
       const y = e.clientY - rect.top;
 
       if (isOverElement(e.clientX, e.clientY)) {
-        // Fade out existing sparkles
-        sparklesRef.current.forEach(sparkle => {
-          sparkle.opacity = Math.max(0, sparkle.opacity - 0.1);
-        });
+        sparklesRef.current = [];
         return;
       }
 
       const { gridX, gridY } = getGridPosition(x, y);
       
-      // Create sparkles in a 5cm x 5cm grid around the cursor with 1cm spacing
-      const newSparkles: Sparkle[] = [];
+      // Clear previous sparkles
+      sparklesRef.current = [];
       
-      for (let offsetX = -areaSize; offsetX <= areaSize; offsetX += gridSize * 1.5) {
-        for (let offsetY = -areaSize; offsetY <= areaSize; offsetY += gridSize * 1.5) {
-          const sparkleX = gridX + offsetX + (Math.random() * gridSize - gridSize/2) * 0.5;
-          const sparkleY = gridY + offsetY + (Math.random() * gridSize - gridSize/2) * 0.5;
+      // Create sparkles in a 5cm x 5cm grid around the cursor with 1cm spacing
+      for (let offsetX = -areaSize; offsetX <= areaSize; offsetX += gridSize) {
+        for (let offsetY = -areaSize; offsetY <= areaSize; offsetY += gridSize) {
+          const sparkleX = gridX + offsetX;
+          const sparkleY = gridY + offsetY;
           
-          // Only add sparkles within a randomized radius
+          // Only add sparkles within 5cm radius
           const distance = Math.sqrt(offsetX * offsetX + offsetY * offsetY);
-          const randomizedAreaSize = areaSize * (0.8 + Math.random() * 0.4);
-          
-          if (distance <= randomizedAreaSize) {
-            newSparkles.push(createSparkle(sparkleX, sparkleY));
+          if (distance <= areaSize) {
+            sparklesRef.current.push(createSparkle(sparkleX, sparkleY));
           }
         }
       }
-
-      // Update sparkles array with new sparkles
-      sparklesRef.current = [...sparklesRef.current.filter(s => s.opacity > 0.1), ...newSparkles];
     };
 
     // Initialize
@@ -142,6 +133,7 @@ const SparkleEffect = () => {
     <canvas
       ref={canvasRef}
       className="pointer-events-none fixed inset-0 z-50"
+      style={{ mixBlendMode: 'screen' }}
     />
   );
 };
