@@ -16,49 +16,45 @@ export default {
     extend: {
       fontFamily: {
         'montserrat': ['Montserrat', 'sans-serif'],
+        'playfair': ['Playfair Display', 'serif'],
       },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
-        background: "#1A1F2C",
-        foreground: "#F8F9FA",
+        background: "#000000",
+        foreground: "#FFFFFF",
         primary: {
-          DEFAULT: "#8B5CF6",
-          hover: "#7C3AED",
+          DEFAULT: "#F97316",
+          hover: "#EA580C",
           foreground: "#FFFFFF",
         },
         secondary: {
-          DEFAULT: "#FEC6A1",
-          hover: "#FDB088",
-          foreground: "#2D3436",
-        },
-        accent: {
-          DEFAULT: "#D946EF",
-          hover: "#C026D3",
+          DEFAULT: "#1A1A1A",
+          hover: "#262626",
           foreground: "#FFFFFF",
         },
+        accent: {
+          DEFAULT: "#FB923C",
+          hover: "#F97316",
+          foreground: "#000000",
+        },
         destructive: {
-          DEFAULT: "#F97316",
+          DEFAULT: "#DC2626",
           foreground: "#FFFFFF",
         },
         muted: {
-          DEFAULT: "#E5DEFF",
-          foreground: "#2D3436",
+          DEFAULT: "#262626",
+          foreground: "#A3A3A3",
         },
         popover: {
-          DEFAULT: "#FDE1D3",
-          foreground: "#2D3436",
+          DEFAULT: "#1A1A1A",
+          foreground: "#FFFFFF",
         },
         card: {
-          DEFAULT: "#F2FCE2",
-          foreground: "#2D3436",
+          DEFAULT: "#1A1A1A",
+          foreground: "#FFFFFF",
         },
-      },
-      borderRadius: {
-        lg: "var(--radius)",
-        md: "calc(var(--radius) - 2px)",
-        sm: "calc(var(--radius) - 4px)",
       },
       keyframes: {
         "fade-up": {
@@ -81,10 +77,33 @@ export default {
             transform: "translateY(0)",
           },
         },
+        "glow": {
+          "0%, 100%": {
+            boxShadow: "0 0 20px rgba(249, 115, 22, 0.5)",
+          },
+          "50%": {
+            boxShadow: "0 0 30px rgba(249, 115, 22, 0.8)",
+          },
+        },
+        "float": {
+          "0%, 100%": {
+            transform: "translateY(0)",
+          },
+          "50%": {
+            transform: "translateY(-10px)",
+          },
+        }
       },
       animation: {
         "fade-up": "fade-up 0.5s ease-out",
         "fade-down": "fade-down 0.5s ease-out",
+        "glow": "glow 2s ease-in-out infinite",
+        "float": "float 3s ease-in-out infinite",
+      },
+      backgroundImage: {
+        'hero-gradient': 'linear-gradient(to right bottom, rgba(0, 0, 0, 0.8), rgba(249, 115, 22, 0.1))',
+        'card-gradient': 'linear-gradient(to bottom right, #1A1A1A, #262626)',
+        'button-gradient': 'linear-gradient(to right, #F97316, #FB923C)',
       },
     },
   },
