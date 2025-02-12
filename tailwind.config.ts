@@ -24,35 +24,35 @@ export default {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         primary: {
-          DEFAULT: "#FFB6C1",
-          hover: "#FFA0B3",
-          foreground: "#2D3436",
+          DEFAULT: "#8B5CF6", // Vivid Purple
+          hover: "#7C3AED",
+          foreground: "#FFFFFF",
         },
         secondary: {
-          DEFAULT: "#FFF0F5",
-          hover: "#FFE4EC",
+          DEFAULT: "#FEC6A1", // Soft Orange
+          hover: "#FDB088",
           foreground: "#2D3436",
         },
         accent: {
-          DEFAULT: "#FF69B4",
-          hover: "#FF1493",
+          DEFAULT: "#D946EF", // Magenta Pink
+          hover: "#C026D3",
           foreground: "#FFFFFF",
         },
         destructive: {
-          DEFAULT: "hsl(var(--destructive))",
-          foreground: "hsl(var(--destructive-foreground))",
+          DEFAULT: "#F97316", // Bright Orange
+          foreground: "#FFFFFF",
         },
         muted: {
-          DEFAULT: "hsl(var(--muted))",
-          foreground: "hsl(var(--muted-foreground))",
+          DEFAULT: "#FEF7CD", // Soft Yellow
+          foreground: "#2D3436",
         },
         popover: {
-          DEFAULT: "hsl(var(--popover))",
-          foreground: "hsl(var(--popover-foreground))",
+          DEFAULT: "#FDE1D3", // Soft Peach
+          foreground: "#2D3436",
         },
         card: {
-          DEFAULT: "hsl(var(--card))",
-          foreground: "hsl(var(--card-foreground))",
+          DEFAULT: "#F2FCE2", // Soft Green
+          foreground: "#2D3436",
         },
       },
       borderRadius: {

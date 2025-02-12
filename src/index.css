@@ -45,7 +45,7 @@
 }
 
 .hero-gradient {
-  background: linear-gradient(to right, rgba(255,182,193,0.2), rgba(255,105,180,0.2));
+  background: linear-gradient(to right, rgba(139,92,246,0.2), rgba(217,70,239,0.2));
 }
 
 .card-hover {
