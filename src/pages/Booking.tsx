@@ -54,13 +54,13 @@ const BookingPage = () => {
           <TabsList className="grid w-full max-w-md mx-auto grid-cols-2 mb-12 glass rounded-xl p-1">
             <TabsTrigger 
               value="consultation" 
-              className="data-[state=active]:bg-accent data-[state=active]:text-white data-[state=active]:shadow-lg px-8 py-3 rounded-lg transition-all duration-300"
+              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-accent/80 data-[state=active]:to-primary/80 data-[state=active]:text-white data-[state=active]:shadow-lg data-[state=active]:shadow-accent/20 px-8 py-3 rounded-lg transition-all duration-300"
             >
               Consultation
             </TabsTrigger>
             <TabsTrigger 
               value="event" 
-              className="data-[state=active]:bg-accent data-[state=active]:text-white data-[state=active]:shadow-lg px-8 py-3 rounded-lg transition-all duration-300"
+              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-accent/80 data-[state=active]:to-primary/80 data-[state=active]:text-white data-[state=active]:shadow-lg data-[state=active]:shadow-accent/20 px-8 py-3 rounded-lg transition-all duration-300"
             >
               Event Booking
             </TabsTrigger>
@@ -89,9 +89,9 @@ const BookingPage = () => {
                   numberOfMonths={1}
                   className="rounded-xl bg-white/5 p-4 shadow-inner"
                   classNames={{
-                    day_selected: "bg-accent text-white hover:bg-accent hover:text-white",
+                    day_selected: "bg-accent text-white hover:bg-accent hover:text-white shadow-lg shadow-accent/30",
                     day_today: "bg-accent/20 text-accent-foreground",
-                    day: "hover:bg-accent/50 hover:text-white transition-colors rounded-md",
+                    day: "hover:bg-accent/50 hover:text-white hover:shadow-lg hover:shadow-accent/20 transition-all rounded-md",
                   }}
                 />
               </div>

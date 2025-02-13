@@ -42,17 +42,17 @@ function Calendar({
         ),
         day: cn(
           buttonVariants({ variant: "ghost" }),
-          "h-9 w-9 p-0 font-normal aria-selected:opacity-100 hover:bg-accent/30 hover:text-white transition-all duration-300"
+          "h-9 w-9 p-0 font-normal aria-selected:opacity-100 hover:bg-accent/30 hover:text-white hover:shadow-lg hover:shadow-accent/20 transition-all duration-300"
         ),
-        day_range_end: "day-range-end rounded-r-md !bg-accent !text-accent-foreground",
+        day_range_end: "day-range-end rounded-r-md !bg-accent !text-accent-foreground shadow-lg shadow-accent/30",
         day_selected:
-          "rounded-md bg-accent text-accent-foreground hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground shadow-lg",
+          "rounded-md bg-accent text-accent-foreground hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground shadow-lg shadow-accent/30",
         day_today: "bg-accent/20 text-accent-foreground rounded-md",
         day_outside:
           "text-muted-foreground opacity-50 aria-selected:bg-accent/50 aria-selected:text-muted-foreground aria-selected:opacity-30",
         day_disabled: "text-muted-foreground opacity-50",
         day_range_middle:
-          "aria-selected:bg-accent/30 aria-selected:text-accent-foreground rounded-none",
+          "aria-selected:bg-accent/30 aria-selected:text-accent-foreground rounded-none shadow-inner",
         day_hidden: "invisible",
         ...classNames,
       }}
