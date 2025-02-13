@@ -1,15 +1,17 @@
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { DateRange } from "react-day-picker";
 import { Calendar } from "@/components/ui/calendar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Motion } from "@/components/ui/motion";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Slider } from "@/components/ui/slider";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Slider } from "@/components/ui/slider";
+import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 import { addDays, format } from "date-fns";
+import { CalendarIcon } from "lucide-react";
 
 type BookingType = "consultation" | "event";
 type EventType = "wedding" | "birthday" | "party" | "furniture";
@@ -22,7 +24,6 @@ interface FormData {
   company: string;
   eventType: EventType;
   budget: number;
-  consultationDate: Date | undefined;
   requirements: string;
   specialRequests: string;
 }
@@ -35,25 +36,24 @@ const initialFormData: FormData = {
   company: "",
   eventType: "wedding",
   budget: 100000,
-  consultationDate: undefined,
   requirements: "",
   specialRequests: "",
 };
 
 const BookingPage = () => {
-  const [bookingType, setBookingType] = useState<BookingType>("consultation");
   const [eventDates, setEventDates] = useState<DateRange | undefined>();
+  const [consultationDate, setConsultationDate] = useState<Date | undefined>();
   const [formData, setFormData] = useState<FormData>(initialFormData);
-  const [errors, setErrors] = useState<Partial<FormData>>({});
+  const [errors, setErrors] = useState<Partial<FormData & { dates: string }>>({});
 
   const validateForm = () => {
-    const newErrors: Partial<FormData> = {};
+    const newErrors: Partial<FormData & { dates: string }> = {};
     if (!formData.firstName) newErrors.firstName = "First name is required";
     if (!formData.lastName) newErrors.lastName = "Last name is required";
     if (!formData.email) newErrors.email = "Email is required";
     if (!formData.phone) newErrors.phone = "Phone number is required";
-    if (!formData.consultationDate) newErrors.consultationDate = "Consultation date is required";
-    if (!eventDates?.from || !eventDates?.to) newErrors.eventType = "Event dates are required";
+    if (!consultationDate) newErrors.dates = "Consultation date is required";
+    if (!eventDates?.from || !eventDates?.to) newErrors.dates = "Event dates are required";
     return newErrors;
   };
 
@@ -71,9 +71,9 @@ const BookingPage = () => {
       duration: 5000,
     });
 
-    // Reset form
     setFormData(initialFormData);
     setEventDates(undefined);
+    setConsultationDate(undefined);
     setErrors({});
   };
 
@@ -89,68 +89,63 @@ const BookingPage = () => {
           Schedule Your Consultation
         </h1>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
-          <Motion
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.3 }}
-            className="glass rounded-xl shadow-xl h-fit"
-          >
-            <form onSubmit={handleSubmit} className="p-6 space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="space-y-2">
-                  <Input
-                    placeholder="First Name *"
-                    value={formData.firstName}
-                    onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
-                    className="border-white/20 bg-white/5 text-white placeholder:text-white/60 focus:border-accent/50 focus:ring-accent/50 transition-all h-12 rounded-lg"
-                  />
-                  {errors.firstName && (
-                    <p className="text-red-400 text-sm">{errors.firstName}</p>
-                  )}
-                </div>
-                <div className="space-y-2">
-                  <Input
-                    placeholder="Last Name *"
-                    value={formData.lastName}
-                    onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
-                    className="border-white/20 bg-white/5 text-white placeholder:text-white/60 focus:border-accent/50 focus:ring-accent/50 transition-all h-12 rounded-lg"
-                  />
-                  {errors.lastName && (
-                    <p className="text-red-400 text-sm">{errors.lastName}</p>
-                  )}
-                </div>
+        <div className="glass rounded-xl shadow-xl max-w-4xl mx-auto">
+          <form onSubmit={handleSubmit} className="p-6 space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-2">
+                <Input
+                  placeholder="First Name *"
+                  value={formData.firstName}
+                  onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
+                  className="border-white/20 bg-white/5 text-white placeholder:text-white/60 focus:border-accent/50 focus:ring-accent/50 transition-all h-12 rounded-lg"
+                />
+                {errors.firstName && (
+                  <p className="text-red-400 text-sm">{errors.firstName}</p>
+                )}
               </div>
+              <div className="space-y-2">
+                <Input
+                  placeholder="Last Name *"
+                  value={formData.lastName}
+                  onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
+                  className="border-white/20 bg-white/5 text-white placeholder:text-white/60 focus:border-accent/50 focus:ring-accent/50 transition-all h-12 rounded-lg"
+                />
+                {errors.lastName && (
+                  <p className="text-red-400 text-sm">{errors.lastName}</p>
+                )}
+              </div>
+            </div>
 
-              <Input
-                type="email"
-                placeholder="Email Address *"
-                value={formData.email}
-                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                className="border-white/20 bg-white/5 text-white placeholder:text-white/60 focus:border-accent/50 focus:ring-accent/50 transition-all h-12 rounded-lg"
-              />
-              {errors.email && (
-                <p className="text-red-400 text-sm">{errors.email}</p>
-              )}
+            <Input
+              type="email"
+              placeholder="Email Address *"
+              value={formData.email}
+              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+              className="border-white/20 bg-white/5 text-white placeholder:text-white/60 focus:border-accent/50 focus:ring-accent/50 transition-all h-12 rounded-lg"
+            />
+            {errors.email && (
+              <p className="text-red-400 text-sm">{errors.email}</p>
+            )}
 
-              <Input
-                type="tel"
-                placeholder="Phone Number *"
-                value={formData.phone}
-                onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                className="border-white/20 bg-white/5 text-white placeholder:text-white/60 focus:border-accent/50 focus:ring-accent/50 transition-all h-12 rounded-lg"
-              />
-              {errors.phone && (
-                <p className="text-red-400 text-sm">{errors.phone}</p>
-              )}
+            <Input
+              type="tel"
+              placeholder="Phone Number *"
+              value={formData.phone}
+              onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+              className="border-white/20 bg-white/5 text-white placeholder:text-white/60 focus:border-accent/50 focus:ring-accent/50 transition-all h-12 rounded-lg"
+            />
+            {errors.phone && (
+              <p className="text-red-400 text-sm">{errors.phone}</p>
+            )}
 
-              <Input
-                placeholder="Company/Organization (Optional)"
-                value={formData.company}
-                onChange={(e) => setFormData({ ...formData, company: e.target.value })}
-                className="border-white/20 bg-white/5 text-white placeholder:text-white/60 focus:border-accent/50 focus:ring-accent/50 transition-all h-12 rounded-lg"
-              />
+            <Input
+              placeholder="Company/Organization (Optional)"
+              value={formData.company}
+              onChange={(e) => setFormData({ ...formData, company: e.target.value })}
+              className="border-white/20 bg-white/5 text-white placeholder:text-white/60 focus:border-accent/50 focus:ring-accent/50 transition-all h-12 rounded-lg"
+            />
 
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-2">
                 <label className="text-white/80 text-sm">Event Type *</label>
                 <Select 
@@ -171,7 +166,7 @@ const BookingPage = () => {
 
               <div className="space-y-2">
                 <label className="text-white/80 text-sm">Budget Range *</label>
-                <div className="pt-6">
+                <div className="pt-2">
                   <Slider
                     value={[formData.budget]}
                     onValueChange={(value) => setFormData({ ...formData, budget: value[0] })}
@@ -185,90 +180,120 @@ const BookingPage = () => {
                   </p>
                 </div>
               </div>
+            </div>
 
-              <div className="space-y-4">
-                <label className="text-white/80 text-sm">Event Requirements</label>
-                <textarea
-                  placeholder="List your specific needs (catering, decoration, seating, etc.)"
-                  value={formData.requirements}
-                  onChange={(e) => setFormData({ ...formData, requirements: e.target.value })}
-                  className="w-full min-h-[100px] p-4 rounded-lg border border-white/20 bg-white/5 text-white placeholder:text-white/60 focus:border-accent/50 focus:ring-accent/50 focus:outline-none transition-all resize-none"
-                />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-2">
+                <label className="text-white/80 text-sm">Event Dates *</label>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <Button
+                      variant="outline"
+                      className={cn(
+                        "w-full justify-start text-left font-normal h-12",
+                        !eventDates && "text-muted-foreground",
+                        "border-white/20 bg-white/5 text-white hover:bg-white/10"
+                      )}
+                    >
+                      <CalendarIcon className="mr-2 h-4 w-4" />
+                      {eventDates?.from ? (
+                        eventDates.to ? (
+                          <>
+                            {format(eventDates.from, "LLL dd, y")} -{" "}
+                            {format(eventDates.to, "LLL dd, y")}
+                          </>
+                        ) : (
+                          format(eventDates.from, "LLL dd, y")
+                        )
+                      ) : (
+                        <span>Select event dates</span>
+                      )}
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0" align="start">
+                    <Calendar
+                      initialFocus
+                      mode="range"
+                      selected={eventDates}
+                      onSelect={setEventDates}
+                      numberOfMonths={2}
+                      disabled={(date) =>
+                        date < new Date() ||
+                        date > addDays(new Date(), 365)
+                      }
+                      className="rounded-md border-0"
+                    />
+                  </PopoverContent>
+                </Popover>
+                {errors.dates && (
+                  <p className="text-red-400 text-sm">{errors.dates}</p>
+                )}
               </div>
 
-              <div className="space-y-4">
-                <label className="text-white/80 text-sm">Special Requests</label>
-                <textarea
-                  placeholder="Any additional requests or requirements..."
-                  value={formData.specialRequests}
-                  onChange={(e) => setFormData({ ...formData, specialRequests: e.target.value })}
-                  className="w-full min-h-[100px] p-4 rounded-lg border border-white/20 bg-white/5 text-white placeholder:text-white/60 focus:border-accent/50 focus:ring-accent/50 focus:outline-none transition-all resize-none"
-                />
-              </div>
-            </form>
-          </Motion>
-
-          <Motion
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.3 }}
-            className="space-y-8"
-          >
-            <div className="glass rounded-xl shadow-xl">
-              <h2 className="text-2xl font-montserrat font-semibold p-6 text-white border-b border-white/10">
-                Event Dates
-              </h2>
-              <div className="p-6">
-                <Calendar
-                  mode="range"
-                  selected={eventDates}
-                  onSelect={setEventDates}
-                  disabled={(date) =>
-                    date < new Date() ||
-                    date > addDays(new Date(), 365)
-                  }
-                  numberOfMonths={1}
-                  className="rounded-xl bg-white/5 p-4 shadow-inner"
-                  classNames={{
-                    day_selected: "bg-accent text-white hover:bg-accent hover:text-white shadow-lg shadow-accent/30",
-                    day_today: "bg-accent/20 text-accent-foreground",
-                    day: "hover:bg-accent/50 hover:text-white hover:shadow-lg hover:shadow-accent/20 transition-all rounded-md",
-                  }}
-                />
+              <div className="space-y-2">
+                <label className="text-white/80 text-sm">Consultation Date *</label>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <Button
+                      variant="outline"
+                      className={cn(
+                        "w-full justify-start text-left font-normal h-12",
+                        !consultationDate && "text-muted-foreground",
+                        "border-white/20 bg-white/5 text-white hover:bg-white/10"
+                      )}
+                    >
+                      <CalendarIcon className="mr-2 h-4 w-4" />
+                      {consultationDate ? (
+                        format(consultationDate, "LLL dd, y")
+                      ) : (
+                        <span>Select consultation date</span>
+                      )}
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0" align="start">
+                    <Calendar
+                      initialFocus
+                      mode="single"
+                      selected={consultationDate}
+                      onSelect={setConsultationDate}
+                      disabled={(date) =>
+                        date < new Date() ||
+                        date > addDays(new Date(), 30)
+                      }
+                      className="rounded-md border-0"
+                    />
+                  </PopoverContent>
+                </Popover>
               </div>
             </div>
 
-            <div className="glass rounded-xl shadow-xl">
-              <h2 className="text-2xl font-montserrat font-semibold p-6 text-white border-b border-white/10">
-                Consultation Date
-              </h2>
-              <div className="p-6">
-                <Calendar
-                  mode="single"
-                  selected={formData.consultationDate}
-                  onSelect={(date) => setFormData({ ...formData, consultationDate: date })}
-                  disabled={(date) =>
-                    date < new Date() ||
-                    date > addDays(new Date(), 30)
-                  }
-                  className="rounded-xl bg-white/5 p-4 shadow-inner"
-                  classNames={{
-                    day_selected: "bg-primary text-white hover:bg-primary hover:text-white shadow-lg shadow-primary/30",
-                    day_today: "bg-primary/20 text-primary-foreground",
-                    day: "hover:bg-primary/50 hover:text-white hover:shadow-lg hover:shadow-primary/20 transition-all rounded-md",
-                  }}
-                />
-              </div>
+            <div className="space-y-4">
+              <label className="text-white/80 text-sm">Event Requirements</label>
+              <textarea
+                placeholder="List your specific needs (catering, decoration, seating, etc.)"
+                value={formData.requirements}
+                onChange={(e) => setFormData({ ...formData, requirements: e.target.value })}
+                className="w-full min-h-[100px] p-4 rounded-lg border border-white/20 bg-white/5 text-white placeholder:text-white/60 focus:border-accent/50 focus:ring-accent/50 focus:outline-none transition-all resize-none"
+              />
+            </div>
+
+            <div className="space-y-4">
+              <label className="text-white/80 text-sm">Special Requests</label>
+              <textarea
+                placeholder="Any additional requests or requirements..."
+                value={formData.specialRequests}
+                onChange={(e) => setFormData({ ...formData, specialRequests: e.target.value })}
+                className="w-full min-h-[100px] p-4 rounded-lg border border-white/20 bg-white/5 text-white placeholder:text-white/60 focus:border-accent/50 focus:ring-accent/50 focus:outline-none transition-all resize-none"
+              />
             </div>
 
             <Button
               type="submit"
-              onClick={handleSubmit}
               className="w-full bg-gradient-to-r from-accent to-primary hover:opacity-90 text-white font-montserrat text-lg py-6 rounded-lg shadow-lg transition-all duration-300 hover:shadow-accent/50 hover:scale-[1.02]"
             >
               Submit Consultation Request
             </Button>
-          </Motion>
+          </form>
         </div>
       </Motion>
     </main>
