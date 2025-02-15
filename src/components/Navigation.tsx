@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { Link, useLocation, Outlet } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Motion } from "@/components/ui/motion";
+import Footer from "./Footer";
 
 const Navigation = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -18,7 +19,7 @@ const Navigation = () => {
   }, []);
 
   return (
-    <>
+    <div className="min-h-screen flex flex-col">
       <Motion
         initial={{ y: -100 }}
         animate={{ y: 0 }}
@@ -82,10 +83,11 @@ const Navigation = () => {
           </div>
         </nav>
       </Motion>
-      <main>
+      <main className="flex-grow pt-24">
         <Outlet />
       </main>
-    </>
+      <Footer />
+    </div>
   );
 };
 
