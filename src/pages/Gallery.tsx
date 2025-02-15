@@ -1,39 +1,52 @@
 
 import { Motion } from "@/components/ui/motion";
-import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
 import { useInView } from "framer-motion";
 import { useRef } from "react";
 
-interface GalleryImage {
-  src: string;
-  alt: string;
-  caption: string;
+interface EventCategory {
+  id: string;
+  title: string;
+  description: string;
+  image: string;
 }
 
-const galleryImages: GalleryImage[] = [
+const eventCategories: EventCategory[] = [
   {
-    src: "/lovable-uploads/cb0ec52d-76c4-43be-9689-eeeff9d00fa2.png",
-    alt: "Wedding Setup",
-    caption: "Elegant Wedding Reception"
+    id: "weddings",
+    title: "Weddings",
+    description: "Elegant ceremonies and receptions that create timeless memories",
+    image: "/lovable-uploads/fc527540-dea1-4377-ae5a-35475b71ec96.png"
   },
   {
-    src: "/lovable-uploads/2e6be3eb-4dff-4979-a8cb-12e8b5911755.png",
-    alt: "Birthday Party",
-    caption: "Magical Birthday Celebration"
+    id: "haldi",
+    title: "Haldi",
+    description: "Traditional pre-wedding ceremonies filled with color and joy",
+    image: "/lovable-uploads/71516578-c066-4c0b-9dc9-8ae5788e098c.png"
   },
   {
-    src: "/lovable-uploads/4f7f3e30-0652-45cd-bae1-e10b70664f20.png",
-    alt: "Corporate Event",
-    caption: "Sophisticated Corporate Gathering"
+    id: "sangeet",
+    title: "Sangeet",
+    description: "Musical celebrations that bring families together",
+    image: "/lovable-uploads/3d0814c1-e4a3-4a65-a476-ca9393045e3b.png"
   },
   {
-    src: "/lovable-uploads/9429bab3-59d1-4091-aa3d-98ae8360bad7.png",
-    alt: "Special Event",
-    caption: "Unforgettable Moments"
+    id: "receptions",
+    title: "Receptions",
+    description: "Grand celebrations of love and unity",
+    image: "/lovable-uploads/2e6be3eb-4dff-4979-a8cb-12e8b5911755.png"
+  },
+  {
+    id: "birthdays",
+    title: "Birthdays",
+    description: "Memorable celebrations for all ages",
+    image: "/lovable-uploads/9429bab3-59d1-4091-aa3d-98ae8360bad7.png"
   }
 ];
 
-const GalleryItem = ({ image, index }: { image: GalleryImage; index: number }) => {
+const EventCard = ({ event }: { event: EventCategory }) => {
+  const navigate = useNavigate();
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true });
 
@@ -42,53 +55,32 @@ const GalleryItem = ({ image, index }: { image: GalleryImage; index: number }) =
       ref={ref}
       initial={{ opacity: 0, y: 50 }}
       animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
-      transition={{ duration: 0.5, delay: index * 0.1 }}
-      whileHover={{ scale: 1.05, rotateY: 180, z: 50 }}
-      className="group relative"
+      transition={{ duration: 0.5 }}
+      className="group relative overflow-hidden rounded-xl bg-white/5 backdrop-blur-sm border border-white/10"
     >
-      <div className="relative perspective-1000">
-        <div className="transform-style-3d transition-transform duration-500 group-hover:rotate-y-180">
-          {/* Front of Polaroid */}
-          <div className="absolute w-full h-full backface-hidden">
-            <div className="bg-white p-3 rounded-md shadow-xl transform rotate-[-2deg] hover:rotate-0 transition-transform duration-300">
-              <div className="relative overflow-hidden rounded-sm aspect-[4/5]">
-                <img
-                  src={image.src}
-                  alt={image.alt}
-                  className="object-cover w-full h-full transition-transform duration-300 group-hover:scale-110"
-                />
-              </div>
-              <p className="mt-3 text-center font-montserrat text-gray-700 text-sm">
-                {image.caption}
-              </p>
-            </div>
-          </div>
-          
-          {/* Back of Polaroid */}
-          <div className="absolute w-full h-full backface-hidden rotate-y-180">
-            <div className="bg-white p-3 rounded-md shadow-xl">
-              <div className="relative overflow-hidden rounded-sm aspect-[4/5]">
-                <img
-                  src={image.src}
-                  alt={image.alt}
-                  className="object-cover w-full h-full"
-                />
-              </div>
-              <div className="mt-3 text-center">
-                <h3 className="font-playfair text-gray-800 font-semibold">
-                  {image.caption}
-                </h3>
-                <p className="text-sm text-gray-600 mt-1 font-montserrat">
-                  Click to view details
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
+      <div className="relative aspect-[16/9] overflow-hidden">
+        <img
+          src={event.image}
+          alt={event.title}
+          className="object-cover w-full h-full transform transition-transform duration-500 group-hover:scale-110"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
       </div>
       
-      {/* String Effect */}
-      <div className="absolute top-[-20px] left-1/2 w-[2px] h-[20px] bg-gradient-to-b from-transparent to-white/30" />
+      <div className="absolute inset-0 flex flex-col justify-end p-6">
+        <h3 className="text-2xl font-playfair font-semibold text-white mb-2">
+          {event.title}
+        </h3>
+        <p className="text-white/80 font-montserrat text-sm mb-4">
+          {event.description}
+        </p>
+        <Button
+          onClick={() => navigate(`/gallery/${event.id}`)}
+          className="bg-accent/90 hover:bg-accent text-white w-full transition-all duration-300 transform group-hover:translate-y-0 translate-y-2 opacity-0 group-hover:opacity-100"
+        >
+          View Portal
+        </Button>
+      </div>
     </Motion>
   );
 };
@@ -104,16 +96,16 @@ const GalleryPage = () => {
       >
         <div className="text-center mb-16">
           <h1 className="text-4xl md:text-5xl font-playfair font-bold text-white mb-4">
-            Our Gallery
+            Event Galleries
           </h1>
           <p className="text-lg text-white/80 font-montserrat max-w-2xl mx-auto">
-            A collection of our most memorable events and magical moments
+            Explore our collection of beautifully crafted events and celebrations
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12">
-          {galleryImages.map((image, index) => (
-            <GalleryItem key={image.src} image={image} index={index} />
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {eventCategories.map((event) => (
+            <EventCard key={event.id} event={event} />
           ))}
         </div>
 
