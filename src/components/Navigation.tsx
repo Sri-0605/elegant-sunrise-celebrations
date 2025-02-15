@@ -44,6 +44,14 @@ const Navigation = () => {
             Home
           </Link>
           <Link
+            to="/gallery"
+            className={`hover:text-accent transition-colors ${
+              location.pathname.includes("/gallery") ? "text-accent" : ""
+            }`}
+          >
+            Gallery
+          </Link>
+          <Link
             to="/booking"
             className={`hover:text-accent transition-colors ${
               location.pathname === "/booking" ? "text-accent" : ""
