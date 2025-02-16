@@ -1,37 +1,19 @@
-
 import { Motion } from "@/components/ui/motion";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { useParams, useNavigate } from "react-router-dom";
 import { useInView } from "framer-motion";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { ArrowLeft } from "lucide-react";
+import axios from "axios";
 
 interface GalleryImage {
+  _id: string;
   src: string;
   alt: string;
   caption: string;
+  category: string;
 }
-
-const eventImages: Record<string, GalleryImage[]> = {
-  weddings: [
-    {
-      src: "/lovable-uploads/fc527540-dea1-4377-ae5a-35475b71ec96.png",
-      alt: "Wedding Ceremony",
-      caption: "Elegant Wedding Ceremony"
-    },
-    // Add more wedding images
-  ],
-  haldi: [
-    {
-      src: "/lovable-uploads/71516578-c066-4c0b-9dc9-8ae5788e098c.png",
-      alt: "Haldi Ceremony",
-      caption: "Traditional Haldi Celebration"
-    },
-    // Add more haldi images
-  ],
-  // ... Add more categories
-};
 
 const GalleryImage = ({ image }: { image: GalleryImage }) => {
   const ref = useRef(null);
@@ -81,8 +63,26 @@ const GalleryImage = ({ image }: { image: GalleryImage }) => {
 const EventGalleryPage = () => {
   const { eventType } = useParams();
   const navigate = useNavigate();
-  const images = eventType ? eventImages[eventType] : [];
-  const title = eventType ? eventType.charAt(0).toUpperCase() + eventType.slice(1) : "";
+  const [images, setImages] = useState<GalleryImage[]>([]);
+
+  useEffect(() => {
+    const fetchImages = async () => {
+      try {
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/images/${eventType}`);
+        setImages(response.data);
+      } catch (error) {
+        console.error('Error fetching images:', error);
+      }
+    };
+
+    if (eventType) {
+      fetchImages();
+    }
+  }, [eventType]);
+
+  const title = eventType ? eventType.split('-').map(word => 
+    word.charAt(0).toUpperCase() + word.slice(1)
+  ).join(' ') : "";
 
   return (
     <main className="min-h-screen bg-gradient-to-br from-background via-secondary to-background py-20 px-4 md:px-8 lg:py-32">
@@ -111,8 +111,8 @@ const EventGalleryPage = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {images.map((image, index) => (
-            <GalleryImage key={index} image={image} />
+          {images.map((image) => (
+            <GalleryImage key={image._id} image={image} />
           ))}
         </div>
       </Motion>

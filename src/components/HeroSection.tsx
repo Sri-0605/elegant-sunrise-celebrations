@@ -1,5 +1,7 @@
 
 import { ArrowDownCircle } from "lucide-react";
+import { Link } from "react-router-dom";
+
 
 const HeroSection = () => {
   const scrollToServices = () => {
@@ -25,9 +27,11 @@ const HeroSection = () => {
         <p className="font-playfair text-white/90 text-xl md:text-2xl max-w-2xl mx-auto mb-8 animate-fade-up italic">
           Creating magical moments that last a lifetime
         </p>
-        <button className="bg-accent hover:bg-accent-hover text-white px-8 py-3 rounded-full transition-all duration-300 animate-fade-up shadow-lg font-playfair text-lg">
-          Book Now
-        </button>
+        <Link to="/booking">
+  <button className="bg-accent hover:bg-accent-hover text-white px-8 py-3 rounded-full transition-all duration-300 animate-fade-up shadow-lg font-playfair text-lg">
+    Book Now
+  </button>
+</Link>
       </div>
       <button
         onClick={scrollToServices}

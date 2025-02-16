@@ -29,6 +29,7 @@
   * {
     @apply border-border selection:bg-primary/20 selection:text-primary;
   }
+  
 
   body {
     @apply bg-background text-foreground antialiased;
@@ -40,7 +41,7 @@
   }
 
   .hero-gradient {
-    background: linear-gradient(to right, rgba(0,0,0,0.9), rgba(249,115,22,0.1));
+    background: linear-gradient(to right, rgba(0, 0, 0, 0.742), rgba(249,115,22,0.1));
   }
 
   .card-hover {

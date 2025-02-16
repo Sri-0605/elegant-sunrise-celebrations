@@ -55,10 +55,10 @@ const Footer = () => {
           <div>
             <h3 className="font-semibold text-white mb-4">Contact Us</h3>
             <ul className="space-y-2 text-white/60">
-              <li>123 Event Street</li>
-              <li>Los Angeles, CA 90012</li>
-              <li>Phone: (555) 123-4567</li>
-              <li>Email: info@sunriseevents.com</li>
+              <li>Sunrise Events, Black Bunny Campus,</li>
+              <li>VIP Road, Surat, Gujarat - 395 007</li>
+              <li>Phone: (+91)-98878 229699</li>
+              <li>Email: sunriseevents.in@gmail.com</li>
             </ul>
           </div>
 

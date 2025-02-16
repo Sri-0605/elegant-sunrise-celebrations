@@ -19,22 +19,23 @@ const ContactPage = () => {
         transition={{ duration: 0.5 }}
         className="max-w-6xl mx-auto"
       >
-        <h1 className="text-3xl md:text-4xl font-semibold text-center mb-8">
-          Contact Us
+        <h1 className="text-3xl md:text-4xl font-semibold text-center mb-4">
+          Loved it? Let others know. </h1> <h1 className="text-3xl md:text-4xl font-semibold text-center mb-10">           
+             Have a suggestion? We're listening!
         </h1>
+        
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <div className="glass p-8 rounded-lg">
             <form onSubmit={handleSubmit} className="space-y-4">
               <Input placeholder="Your Name" required />
               <Input type="email" placeholder="Email Address" required />
-              <Input type="tel" placeholder="Phone Number" required />
               <textarea
                 className="w-full h-32 rounded-md border border-input bg-background px-3 py-2 text-sm resize-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                 placeholder="Your Message"
                 required
               />
               <Button type="submit" className="w-full">
-                Send Message
+                Submit Review
               </Button>
             </form>
           </div>
@@ -44,18 +45,19 @@ const ContactPage = () => {
               <div className="space-y-4">
                 <div className="flex items-center gap-3">
                   <MapPin className="text-accent" />
-                  <p>123 Event Street, Wedding City, 12345</p>
+                  <p>Sunrise Events, Black Bunny Campus,
+                  VIP Road, Surat, Gujarat - 395 007</p>
                 </div>
                 <div className="flex items-center gap-3">
                   <Phone className="text-accent" />
                   <a href="tel:+1234567890" className="hover:text-accent">
-                    (123) 456-7890
+                    (+91)-98878 229699
                   </a>
                 </div>
                 <div className="flex items-center gap-3">
                   <Mail className="text-accent" />
-                  <a href="mailto:info@sunrise-events.com" className="hover:text-accent">
-                    info@sunrise-events.com
+                  <a href="sunriseevents.in@gmail.com" className="hover:text-accent">
+                    sunriseevents.in@gmail.com
                   </a>
                 </div>
               </div>
@@ -65,9 +67,11 @@ const ContactPage = () => {
               <div className="flex items-center gap-3">
                 <Clock className="text-accent" />
                 <div>
-                  <p>Monday - Friday: 9:00 AM - 6:00 PM</p>
-                  <p>Saturday: 10:00 AM - 4:00 PM</p>
-                  <p>Sunday: Closed</p>
+                <ul className="space-y-2 text-white/60">
+              <li>Monday - Friday: 9:00 AM - 6:00 PM</li>
+              <li>Saturday: 10:00 AM - 4:00 PM</li>
+              <li>Sunday: Closed</li>
+            </ul>
                 </div>
               </div>
             </div>
